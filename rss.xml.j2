@@ -1,0 +1,48 @@
+{#
+# Copyright (C) 2019 GNUnet e.V.
+#
+# This code is derived from code contributed to GNUnet eV
+# by Nikita Ronja <nikita@NetBSD.org>.
+#
+# Permission to use, copy, modify, and/or distribute this software for
+# any purpose with or without fee is hereby granted.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+# WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+# AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+# DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
+# PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+# TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+# PERFORMANCE OF THIS SOFTWARE.
+#
+# SPDX-License-Identifier: 0BSD
+#}
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  {% for siteconfitem in siteconf %}
+    <channel>
+      <atom:link href="https://{{ siteconfitem['baseurl'] }}/{{ lang }}{{ siteconfitem['newsloc'] }}rss.xml" rel="self" type="application/rss+xml" />
+      <title>{{ siteconfitem['rsstitle'] }}</title>
+      <language>{{ lang }}</language>
+      <description>{{ siteconfitem['rssdescr']|e }}</description>
+      <link>https://{{ siteconfitem['baseurl'] }}/</link>
+      <lastBuildDate>{{ now }}</lastBuildDate>
+      {% for newspostitem in newsposts %}
+        <item>
+          <guid>https://{{ siteconfitem['baseurl'] }}/{{ lang }}{{ siteconfitem['newsloc'] }}{{ newspostitem['page'] }}</guid>
+          <link>https://{{ siteconfitem['baseurl'] }}/{{ lang }}{{ siteconfitem['newsloc'] }}{{ newspostitem['page'] }}</link>
+          <pubDate>{{ conv_date_rfc822(newspostitem["date"]) }}</pubDate>
+          <title>{{ newspostitem['title']|e }}</title>
+          <description>
+            <![CDATA[
+             <article>
+               {{ newspostitem['content'] }}
+             </article>
+             ]]>
+          </description>
+        </item>
+      {% endfor %}
+    </channel>
+  {% endfor %}
+</rss>
